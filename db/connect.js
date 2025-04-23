@@ -11,13 +11,13 @@ const env = {
     ssl:      { rejectUnauthorized: false },
 };
 
-export default async function connect(delay = true) {
+export default async function connect(prompt = false) {
     try {
         const conn = new pg.Client(env);
         await conn.connect();
         await conn.query('select 1'); // test connection
-        if (delay && process.env.PG_PROMPT === 'true') {
-            await addPrompts(conn);
+        if (prompt) {
+            addPrompts(conn);
         }
         return conn;
     } catch (e) {
@@ -26,7 +26,7 @@ export default async function connect(delay = true) {
     }
 }
 
-async function addPrompts(conn) {
+function addPrompts(conn) {
     const q = conn.query;
     conn.query = async function() {
         logQuery(arguments);

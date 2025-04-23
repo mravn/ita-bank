@@ -23,56 +23,66 @@ Then run
 
 ```shell
 npm install
-npm run init
+npm run createDb
 ```
 
 ## Use
 
+To start the bank, execute:
+```shell
+npm run bank
+```
+
+You'll then get a prompt of the form:
+```
+bank> 
+```
+
 ### Print accounts
 To print all account balances and compare with vault balance:
 ```shell
-npm run print
+print
 ```
 
 ### Open account
 To open account 1234 with a balance of $0:
 ```shell
-npm run open 1234
+open account 1234
 ```
 Account numbers must be unique integers in the range 0..1000000 (incl..excl).
 
 ### Close account
 To close account 1234:
 ```shell
-npm run close 1234
+close account 1234
 ```
 The account balance must be zero when closing an account.
 
 ### Deposit into account
 To deposit $500 into account 1234:
 ```shell
-npm run depost 500 into 1234
+deposit 500 into 1234
 ```
 Amounts must be non-negative.
 
 ### Withdraw from account
 To withdraw $500 from account 1234:
 ```shell
-npm run withdraw 500 from 1234
+withdraw 500 from 1234
 ```
 Account balances cannot be negative.
 
 ### Transfer between accounts
 To transfer $500 from account 1234 to account 5678:
 ```shell
-npm run transfer 500 from 1234 to 5678
+transfer 500 from 1234 to 5678
 ```
 
 ### Re-initialise the bank
 To re-initialise the bank database and start over with
 zero accounts and a zero vault balance:
 ```shell
-npm run init
+init
 ```
 
 ## Prompting on database access

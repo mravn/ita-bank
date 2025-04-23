@@ -1,24 +1,16 @@
-import connect from './connect.js';
-import { checkAccountExists, checkZeroBalance } from './common.js';
+import { checkAccountExists, parseAccountId, checkZeroBalance } from './common.js';
 
-if (process.argv.length !== 3) {
-    console.error('Usage: npm run close <account>')
-    process.exit(1);
+export default async function close(db, args) {
+    if (args.length !== 2 || args[0] !== 'account') {
+        console.log('Usage: close account <account>');
+        return;
+    }
+    const account = parseAccountId(args[1]);
+    await doClose(db, account);
 }
 
-const conn = await connect();
-try {
-    const accountId = parseInt(process.argv[2]);
-    await closeAccount(conn, accountId);
-    console.log('Success.');
-} catch (e) {
-    console.error('Closing account failed:', e.message);
-} finally {
-    await conn.end();
-}
-
-async function closeAccount(conn, accountId) {
-    await checkAccountExists(conn, accountId);
-    await checkZeroBalance(conn, accountId);
-    await conn.query('delete from accounts where account_id = $1', [accountId]); 
+async function doClose(db, account) {
+    await checkAccountExists(db, account);
+    await checkZeroBalance(db, account);
+    await db.query('delete from accounts where account_id = $1', [account]); 
 }

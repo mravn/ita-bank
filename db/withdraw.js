@@ -1,26 +1,16 @@
-import connect from './connect.js';
-import { checkAccountExists, checkNonNegativeAmount } from './common.js';
+import { checkAccountExists, parseAmount, parseAccountId } from './common.js';
 
-if (process.argv.length !== 5 || process.argv[3] !== 'from') {
-    console.error('Usage: npm run withdraw <amount> from <account>')
-    process.exit(1);
+export default async function withdraw(db, args) {
+    if (args.length !== 3 || args[1] !== 'from') {
+        throw new Error('Usage: withdraw <amount> from <account>')
+    }
+    const amount = parseAmount(args[0]);
+    const account = parseAccountId(args[2]);
+    await doWithdraw(db, amount, account);
 }
 
-const conn = await connect();
-try {
-    const amount = parseFloat(process.argv[2]);
-    const accountId = parseInt(process.argv[4]);
-    await withdraw(conn, amount, accountId);
-    console.log('Success.');
-} catch (e) {
-    console.error('Withdrawal failed:', e.message);
-} finally {
-    await conn.end();
-}
-
-async function withdraw(conn, amount, accountId) {
-    checkNonNegativeAmount(amount);
-    await checkAccountExists(conn, accountId);
-    await conn.query('update accounts set balance = balance - $1 where account_id = $2', [amount, accountId]);
-    await conn.query('update vault set balance = balance - $1', [amount]);
+async function doWithdraw(db, amount, account) {
+    await checkAccountExists(db, account);
+    await db.query('update accounts set balance = balance - $1 where account_id = $2', [amount, account]);
+    await db.query('update vault set balance = balance - $1', [amount]);
 }

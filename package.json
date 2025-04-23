@@ -2,13 +2,8 @@
     "private": true,
     "type": "module",
     "scripts": {
-        "init": "node db/init.js",
-        "print": "node db/print.js",
-        "open": "node db/open.js",
-        "deposit": "node db/deposit.js",
-        "withdraw": "node db/withdraw.js",
-        "transfer": "node db/transfer.js",
-        "close": "node db/close.js"
+        "createDb": "node db/createDb.js",
+        "bank": "node db/bank.js"
     },
     "dependencies": {
         "pg": "8.14.1",

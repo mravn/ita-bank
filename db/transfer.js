@@ -1,26 +1,17 @@
-import connect from './connect.js';
-import { checkAccountExists, checkNonNegativeAmount } from './common.js';
+import { checkAccountExists, parseAccountId, parseAmount } from './common.js';
 
-if (process.argv.length !== 7 || process.argv[3] !== 'from' || process.argv[5] !== 'to') {
-    console.error('Usage: npm run transfer <amount> from <sender> to <receiver>')
-    process.exit(1);
+export default async function transfer(db, args) {
+    if (args.length !== 5 || args[1] !== 'from' || args[3] !== 'to') {
+        console.log('Usage: transfer <amount> from <sender> to <receiver>')
+        return;
+    }
+    const amount = parseAmount(args[0]);
+    const sender = parseAccountId(args[2]);
+    const receiver = parseAccountId(args[4]);
+    await doTransfer(db, amount, sender, receiver);    
 }
 
-const conn = await connect();
-try {
-    const amount = parseFloat(process.argv[2]);
-    const sender = parseInt(process.argv[4]);
-    const receiver = parseInt(process.argv[6]);
-    await transfer(conn, amount, sender, receiver);
-    console.log('Success.');
-} catch (e) {
-    console.log('Transfer failed:', e.message);
-} finally {
-    await conn.end();
-}
-
-async function transfer(conn, amount, sender, receiver) {
-    checkNonNegativeAmount(amount);
+async function doTransfer(conn, amount, sender, receiver) {
     await checkAccountExists(conn, sender);
     await checkAccountExists(conn, receiver);
     await conn.query('update accounts set balance = balance + $1 where account_id = $2', [amount, receiver]);

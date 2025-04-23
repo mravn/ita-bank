@@ -1,21 +1,14 @@
-import connect from './connect.js';
+import { parseAccountId } from "./common.js";
 
-if (process.argv.length !== 3) {
-    console.error('Usage: npm run open <account>')
-    process.exit(1);
+export default async function open(db, args) {
+    if (args.length !== 2 || args[0] !== 'account') {
+        console.log('Usage: open account <account>');
+        return;
+    }
+    const account = parseAccountId(args[1]);
+    await doOpen(db, account);
 }
 
-const conn = await connect();
-try {
-    const accountId = parseInt(process.argv[2]);
-    await openAccount(accountId);
-    console.log('Success.');
-} catch (e) {
-    console.error('Opening account failed:', e.message);
-} finally {
-    await conn.end();
-}
-
-async function openAccount(accountId) {
-    await conn.query('insert into accounts (account_id) values ($1)', [accountId]); 
+async function doOpen(db, account) {
+    await db.query('insert into accounts (account_id) values ($1)', [account]); 
 }
