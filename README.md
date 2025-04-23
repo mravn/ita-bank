@@ -11,6 +11,16 @@ sum of account balances must equal the vault balance.
 
 ## Setup
 
+Add a `.env` file of the form
+```env
+PG_HOST=ep-orange-cat-f428fcf9-pooler.eu-central-1.aws.neon.tech
+PG_PORT=5432
+PG_DATABASE=bank
+PG_USER=neondb_owner
+PG_PASSWORD=<very secret>
+```
+Then run
+
 ```shell
 npm install
 npm run init
