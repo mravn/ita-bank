@@ -34,54 +34,54 @@ npm run bank
 ```
 
 You'll then get a prompt of the form:
-```
+```text
 bank> 
 ```
 
 ### Print accounts
 To print all account balances and compare with vault balance:
-```shell
+```text
 bank> print
 ```
 
 ### Open account
 To open account 1234 with a balance of $0:
-```shell
+```text
 bank> open account 1234
 ```
 Account numbers must be unique integers in the range 0..1000000 (incl..excl).
 
 ### Close account
 To close account 1234:
-```shell
+```text
 bank> close account 1234
 ```
 The account balance must be zero when closing an account.
 
 ### Deposit into account
 To deposit $500 into account 1234:
-```shell
+```text
 bank> deposit 500 into 1234
 ```
 Amounts must be non-negative.
 
 ### Withdraw from account
 To withdraw $500 from account 1234:
-```shell
+```text
 bank> withdraw 500 from 1234
 ```
 Account balances cannot be negative.
 
 ### Transfer between accounts
 To transfer $500 from account 1234 to account 5678:
-```shell
+```text
 bank> transfer 500 from 1234 to 5678
 ```
 
 ### Reset the bank
 To reset the bank database and start over with
 zero accounts and a zero vault balance:
-```shell
+```text
 bank> reset
 ```
 
@@ -91,18 +91,18 @@ To facilitate playing with transaction isolation, you can execute the scripts
 with explicit prompts on each database access.
 
 You toggle this "prompt mode" on and off using the command:
-```shell
+```text
 bank> prompt
 ```
 
 A question mark is added to the bank prompt when in prompt mode:
-```shell
+```text
 bank?>
 ```
 
 ### Quit
 To quit the bank application:
-```shell
+```text
 bank> quit
 ```
 
