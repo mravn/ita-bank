@@ -1,0 +1,17 @@
+{
+    "private": true,
+    "type": "module",
+    "scripts": {
+        "recreate": "node db/recreate.js",
+        "print": "node db/print.js",
+        "open": "node db/open.js",
+        "deposit": "node db/deposit.js",
+        "withdraw": "node db/withdraw.js",
+        "transfer": "node db/transfer.js",
+        "close": "node db/close.js"
+    },
+    "dependencies": {
+        "pg": "8.14.1",
+        "dotenv": "16.5.0"
+    }
+}
