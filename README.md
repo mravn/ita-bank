@@ -80,28 +80,37 @@ npm run init
 Each operation (except initialisation) prints the database
 queries and commands involved to the console.
 
-Database access is randomly delayed to facilitate experiments
-with transactions. The console logging includes a timestamp
-with minutes, seconds, and milliseconds so that you can see
-approximately when a particular access was made.
+You will be prompted to press Enter in order to proceed with
+the database access. This facilitate experiments with transactions.
 
 ```text
+$ npm run init
+Success.
 $ npm run open 1234
-21:22.096 insert into accounts (account_id) values (1234) --> INSERT 1
+insert into accounts (account_id) values (1234) [press enter]
+---> INSERT 1
 Success.
 $ npm run open 5678
-21:40.166 insert into accounts (account_id) values (5678) --> INSERT 1
+insert into accounts (account_id) values (5678) [press enter]
+---> INSERT 1
 Success.
 $ npm run deposit 500 into 1234
-21:51.544 select exists (select 1 from accounts where account_id = 1234) --> { exists: true }
-21:51.730 update accounts set balance = balance + 500 where account_id = 1234 --> UPDATE 1
-21:52.035 update vault set balance = balance + 500 --> UPDATE 1
+select exists (select 1 from accounts where account_id = 1234) [press enter]
+---> { exists: true }
+update accounts set balance = balance + 500 where account_id = 1234 [press enter]
+---> UPDATE 1
+update vault set balance = balance + 500 [press enter]
+---> UPDATE 1
 Success.
 $ npm run transfer 500 from 1234 to 5678
-22:06.488 select exists (select 1 from accounts where account_id = 1234) --> { exists: true }
-22:07.118 select exists (select 1 from accounts where account_id = 5678) --> { exists: true }
-22:07.430 update accounts set balance = balance + 500 where account_id = 5678 --> UPDATE 1
-22:07.992 update accounts set balance = balance - 500 where account_id = 1234 --> UPDATE 1
+select exists (select 1 from accounts where account_id = 1234) [press enter]
+---> { exists: true }
+select exists (select 1 from accounts where account_id = 5678) [press enter]
+---> { exists: true }
+update accounts set balance = balance + 500 where account_id = 5678 [press enter]
+---> UPDATE 1
+update accounts set balance = balance - 500 where account_id = 1234 [press enter]
+---> UPDATE 1
 Success.
 $
 ```
@@ -116,7 +125,7 @@ an unknown account into an existing account. Is that operation
 How can transactions help?
 
 ### Isolation
-Try running two operations in parallel (e.g. using two terminals).
+Try running two operations in parallel by using two terminals.
 Are the operations **isolated** from each other, as implemented?
 
 How can transactions help?

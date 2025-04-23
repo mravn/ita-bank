@@ -27,12 +27,11 @@ export default async function connect(delay = true) {
 }
 
 async function introduceDelays(conn) {
-    await randomDelay();
     const q = conn.query;
     conn.query = async function() {
-        await randomDelay();
         logQuery(arguments);
         try {
+            await delay();
             const result = await q.apply(conn, arguments);
             logResult(result);
             return result;
@@ -41,21 +40,23 @@ async function introduceDelays(conn) {
             throw e;
         }
     };
-} 
-
-function randomDelay() {
-    const delay = Math.floor(Math.random() * 900) + 100;
-    return new Promise(resolve => setTimeout(resolve, delay));
 }
 
 function logQuery(args) {
-    process.stdout.write(new Date().toISOString().substring(14, 23))
-    process.stdout.write(' ');
     process.stdout.write(args[0].replaceAll(/\$\d+/g, (p) => args[1][parseInt(p.substring(1)) - 1]));
-    process.stdout.write(' --> ');
+    process.stdout.write(' [press enter]');
+}
+
+function delay() {
+    process.stdin.resume();
+    return new Promise((r) => process.stdin.once('data', () => {
+        process.stdin.pause();
+        r();
+    }));
 }
 
 function logResult(result) {
+    process.stdout.write('---> ');
     if (result.command === 'SELECT') {
         if (result.rowCount === 1) {
             console.log(result.rows[0]);
