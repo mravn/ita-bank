@@ -2,7 +2,7 @@
     "private": true,
     "type": "module",
     "scripts": {
-        "recreate": "node db/recreate.js",
+        "init": "node db/init.js",
         "print": "node db/print.js",
         "open": "node db/open.js",
         "deposit": "node db/deposit.js",

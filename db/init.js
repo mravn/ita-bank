@@ -16,7 +16,7 @@ try {
     `);
     console.log('Success.');
 } catch (e) {
-    console.error('Recreation failed:', e.message);
+    console.error('Initialisation failed:', e.message);
 } finally {
     await conn.end();
 }
