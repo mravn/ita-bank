@@ -16,8 +16,8 @@ export default async function connect(delay = true) {
         const conn = new pg.Client(env);
         await conn.connect();
         await conn.query('select 1'); // test connection
-        if (delay) {
-            await introduceDelays(conn);
+        if (delay && process.env.PG_PROMPT === 'true') {
+            await addPrompts(conn);
         }
         return conn;
     } catch (e) {
@@ -26,12 +26,12 @@ export default async function connect(delay = true) {
     }
 }
 
-async function introduceDelays(conn) {
+async function addPrompts(conn) {
     const q = conn.query;
     conn.query = async function() {
         logQuery(arguments);
         try {
-            await delay();
+            await prompt();
             const result = await q.apply(conn, arguments);
             logResult(result);
             return result;
@@ -44,10 +44,10 @@ async function introduceDelays(conn) {
 
 function logQuery(args) {
     process.stdout.write(args[0].replaceAll(/\$\d+/g, (p) => args[1][parseInt(p.substring(1)) - 1]));
-    process.stdout.write(' [press enter]');
 }
 
-function delay() {
+function prompt() {
+    process.stdout.write(' [press enter]');
     process.stdin.resume();
     return new Promise((r) => process.stdin.once('data', () => {
         process.stdin.pause();

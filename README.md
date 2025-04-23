@@ -75,34 +75,21 @@ zero accounts and a zero vault balance:
 npm run init
 ```
 
-## Console logging
+## Prompting on database access
 
-Each operation (except initialisation) prints the database
-queries and commands involved to the console.
+To facilitate playing with transaction isolation, you can execute the scripts
+with explicit prompts on database queries and commands.
 
-You will be prompted to press Enter in order to proceed with
-the database access. This facilitate experiments with transactions.
+This means the console will show you what database access is about to be
+performed and will ask you to press Enter to proceed.
 
+You enable this functionality by setting the environment variable `PG_PROMPT`
+to `true`.
+
+On macOS, you just add the environment variable before `npm` as shown below.
+It then applies only to a single execution:
 ```text
-$ npm run init
-Success.
-$ npm run open 1234
-insert into accounts (account_id) values (1234) [press enter]
----> INSERT 1
-Success.
-$ npm run open 5678
-insert into accounts (account_id) values (5678) [press enter]
----> INSERT 1
-Success.
-$ npm run deposit 500 into 1234
-select exists (select 1 from accounts where account_id = 1234) [press enter]
----> { exists: true }
-update accounts set balance = balance + 500 where account_id = 1234 [press enter]
----> UPDATE 1
-update vault set balance = balance + 500 [press enter]
----> UPDATE 1
-Success.
-$ npm run transfer 500 from 1234 to 5678
+$ PG_PROMPT=true npm run transfer 500 from 1234 to 5678
 select exists (select 1 from accounts where account_id = 1234) [press enter]
 ---> { exists: true }
 select exists (select 1 from accounts where account_id = 5678) [press enter]
@@ -112,7 +99,28 @@ update accounts set balance = balance + 500 where account_id = 5678 [press enter
 update accounts set balance = balance - 500 where account_id = 1234 [press enter]
 ---> UPDATE 1
 Success.
+$ npm run transfer 500 from 5678 to 1234
+Success.
 $
+```
+
+In Windows PowerShell, you need to set the variable on a separate line.
+It applies to the terminal session, so you also need to unset it when done.
+```text
+C:\Users\mnra\ita-bank> $Env:PG_PROMPT = 'true'
+C:\Users\mnra\ita-bank> npm run transfer 500 from 1234 to 5678
+select exists (select 1 from accounts where account_id = 1234) [press enter]
+---> { exists: true }
+select exists (select 1 from accounts where account_id = 5678) [press enter]
+---> { exists: true }
+update accounts set balance = balance + 500 where account_id = 5678 [press enter]
+---> UPDATE 1
+update accounts set balance = balance - 500 where account_id = 1234 [press enter]
+---> UPDATE 1
+Success.
+C:\Users\mnra\ita-bank> $Env:PG_PROMPT = ''
+C:\Users\mnra\ita-bank> npm run transfer 500 from 5678 to 1234
+Success.
 ```
 
 ## Transactions
@@ -125,7 +133,8 @@ an unknown account into an existing account. Is that operation
 How can transactions help?
 
 ### Isolation
-Try running two operations in parallel by using two terminals.
+Try running two operations in parallel by using two terminals and
+the `PG_PROMPT` environment variable.
 Are the operations **isolated** from each other, as implemented?
 
 How can transactions help?
