@@ -166,13 +166,13 @@ How can transactions help achieve atomicity?
 Add `begin`/`commit`/`rollback` commands at suitable places,
 changing
 ```js
-function doXyz(db, a, b, c) {
+async function doXyz(db, a, b, c) {
     // db access to implement operation xyz
 }
 ```
 into
 ```js
-function doXyz(db, a, b, c) {
+async function doXyz(db, a, b, c) {
     await db.query('begin');
     try {
         // db access to implement operation xyz
@@ -199,7 +199,7 @@ How can transactions help achieve isolation?
 Do we need the more expensive isolation level "repeatable read"?
 If so, use the following pattern:
 ```js
-function doXyz(db, a, b, c) {
+async function doXyz(db, a, b, c) {
     await db.query('begin');
     await db.query('set transaction isolation level repeatable read');
     try {
