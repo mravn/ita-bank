@@ -85,24 +85,28 @@ async function dispatchCommand(command, args) {
             break;
         case 's':
         case 'suspend':
-            suspend(args);
+            await suspend(args);
             break;
         case 'q':
         case 'quit':
-            await quit();
+            await quit(args);
             break;
         default:
             console.log(`Unknown command: '${command}'`)
     }
 }
 
-async function quit() {
+async function quit(args) {
+    if (args.length !== 0) {
+        console.log('Usage: q[uit]');
+        return;
+    }
     await connection.end();
     await suspendedConnection.end();
     process.exit(0);
 }
 
-function suspend(args) {
+async function suspend(args) {
     if (args.length === 0) {
         suspendMode = !suspendMode;
         return;
@@ -115,5 +119,5 @@ function suspend(args) {
             return;
         }
     }
-    console.log("Usage: suspend [on|off]");
+    console.log("Usage: s[uspend] [on|off]");
 }
