@@ -18,6 +18,10 @@ PG_DATABASE=bank
 PG_USER=neondb_owner
 PG_PASSWORD=<very secret>
 ```
+The credentials must support connection to a PostgreSQL database
+server that allows execution of DDL and DML commands as well as
+DQL queries.
+
 Then run
 
 ```shell
