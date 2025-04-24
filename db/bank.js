@@ -46,30 +46,39 @@ async function executeCommand(command, args) {
 
 async function dispatchCommand(command, args) {
     switch (command) {
+        case 'p':
         case 'print':
             await print(currentConnection(), args);
             break;
+        case 'o':
         case 'open':
             await open(currentConnection(), args);
             break;
+        case 'd':
         case 'deposit':
             await deposit(currentConnection(), args);
             break;
+        case 'w':
         case 'withdraw':
             await withdraw(currentConnection(), args);
             break;
+        case 't':
         case 'transfer':
             await transfer(currentConnection(), args);
             break;
+        case 'c':
         case 'close':
             await close(currentConnection(), args);
             break;
+        case 'r':
         case 'reset':
             await reset(connection, args);
             break;
+        case 's':
         case 'suspend':
             suspend(args);
             break;
+        case 'q':
         case 'quit':
             await quit();
             break;

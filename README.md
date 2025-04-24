@@ -52,6 +52,7 @@ Vault balance:         500.00 ✓
 
 bank>
 ```
+You can use `p` as a shorthand for `print`.
 
 ### Open account
 To open account 1234 with a balance of $0:
@@ -61,6 +62,8 @@ bank>
 ```
 Account numbers must be unique integers in the range 0..1000000 (incl..excl).
 
+You can use `o` as a shorthand for `open`.
+
 ### Deposit into account
 To deposit $500 into account 1234:
 ```text
@@ -68,6 +71,8 @@ bank> deposit 500 into 1234
 bank>
 ```
 Amounts must be non-negative.
+
+You can use `d` as a shorthand for `deposit`.
 
 ### Withdraw from account
 To withdraw $500 from account 1234:
@@ -77,12 +82,16 @@ bank>
 ```
 Account balances cannot be negative.
 
+You can use `w` as a shorthand for `withdraw`.
+
 ### Transfer between accounts
 To transfer $500 from account 1234 to account 5678:
 ```text
 bank> transfer 500 from 1234 to 5678
 bank>
 ```
+
+You can use `t` as a shorthand for `transfer`.
 
 ### Close account
 To close account 1234:
@@ -92,6 +101,8 @@ bank>
 ```
 The account balance must be zero when closing an account.
 
+You can use `c` as a shorthand for `close`.
+
 ### Reset the bank
 To reset the bank database and start over with zero accounts and
 a zero vault balance:
@@ -99,6 +110,8 @@ a zero vault balance:
 bank> reset
 bank>
 ```
+
+You can use `r` as a shorthand for `reset`.
 
 ### Suspend mode
 
@@ -128,11 +141,15 @@ bank$ suspend off
 bank>
 ```
 
+You can use `s` as a shorthand for `suspend`.
+
 ### Quit
 To quit the bank application:
 ```text
 bank> quit
 ```
+
+You can use `q` as a shorthand for `quit`.
 
 ## Learning transactions
 
