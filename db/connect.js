@@ -11,14 +11,11 @@ const env = {
     ssl:      { rejectUnauthorized: false },
 };
 
-export default async function connect(prompt = false) {
+export async function connect() {
     try {
         const conn = new pg.Client(env);
         await conn.connect();
         await conn.query('select 1'); // test connection
-        if (prompt) {
-            addPrompts(conn);
-        }
         return conn;
     } catch (e) {
         console.error(`Failed to connect to ${env.database}`);
@@ -26,12 +23,18 @@ export default async function connect(prompt = false) {
     }
 }
 
-function addPrompts(conn) {
+export async function connectWithSuspension() {
+    const conn = await connect()
+    addSuspension(conn);
+    return conn;
+}
+
+function addSuspension(conn) {
     const q = conn.query;
     conn.query = async function() {
         logQuery(arguments);
         try {
-            await prompt();
+            await suspend();
             const result = await q.apply(conn, arguments);
             logResult(result);
             return result;
@@ -46,8 +49,8 @@ function logQuery(args) {
     process.stdout.write(args[0].replaceAll(/\$\d+/g, (p) => args[1][parseInt(p.substring(1)) - 1]));
 }
 
-function prompt() {
-    process.stdout.write(' [press enter]');
+function suspend() {
+    process.stdout.write(' [press Enter]');
     process.stdin.resume();
     return new Promise((r) => process.stdin.once('data', () => {
         process.stdin.pause();

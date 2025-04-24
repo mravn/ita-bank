@@ -1,5 +1,5 @@
 import { recreate } from "./common.js";
-import connect from "./connect.js";
+import { connect } from "./connect.js";
 
 const db = await connect();
 try {

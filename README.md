@@ -1,9 +1,8 @@
 # Bank transactions
 
-Play with PostgreSQL transactions.
+This project is used for learning about PostgreSQL transactions.
 
-The project contains a handful of scripts to simulate the operations
-of a *very* simple bank.
+The main script simulates the operations of a *very* simple bank.
 
 The bank has a list of accounts, each with a non-negative balance. The
 bank also has a vault with all the deposits. At any point in time, the
@@ -42,26 +41,31 @@ bank>
 To print all account balances and compare with vault balance:
 ```text
 bank> print
+
+Number of accounts:         2
+-----------------------------
+001234:                  0.00
+005678:                500.00
+-----------------------------
+Total balance:         500.00 ✓
+Vault balance:         500.00 ✓
+
+bank>
 ```
 
 ### Open account
 To open account 1234 with a balance of $0:
 ```text
 bank> open account 1234
+bank>
 ```
 Account numbers must be unique integers in the range 0..1000000 (incl..excl).
-
-### Close account
-To close account 1234:
-```text
-bank> close account 1234
-```
-The account balance must be zero when closing an account.
 
 ### Deposit into account
 To deposit $500 into account 1234:
 ```text
 bank> deposit 500 into 1234
+bank>
 ```
 Amounts must be non-negative.
 
@@ -69,6 +73,7 @@ Amounts must be non-negative.
 To withdraw $500 from account 1234:
 ```text
 bank> withdraw 500 from 1234
+bank>
 ```
 Account balances cannot be negative.
 
@@ -76,28 +81,51 @@ Account balances cannot be negative.
 To transfer $500 from account 1234 to account 5678:
 ```text
 bank> transfer 500 from 1234 to 5678
+bank>
 ```
+
+### Close account
+To close account 1234:
+```text
+bank> close account 1234
+bank>
+```
+The account balance must be zero when closing an account.
 
 ### Reset the bank
-To reset the bank database and start over with
-zero accounts and a zero vault balance:
+To reset the bank database and start over with zero accounts and
+a zero vault balance:
 ```text
 bank> reset
+bank>
 ```
 
-### Toggle prompt mode
+### Suspend mode
 
-To facilitate playing with transaction isolation, you can execute the scripts
-with explicit prompts on each database access.
-
-You toggle this "prompt mode" on and off using the command:
+To facilitate playing with transaction isolation, you can have
+the bank suspend execution just before each database access:
 ```text
-bank> prompt
+bank> suspend on
+bank$ 
 ```
-
-A question mark is added to the bank prompt when in prompt mode:
+The prompt then changes slightly to indicate suspend mode.
+Executing an operation now looks as follows:
 ```text
-bank?>
+bank$ transfer 500 from 1234 to 5678
+select exists (select 1 from accounts where account_id = 1234) [press Enter]
+---> { exists: true }
+select exists (select 1 from accounts where account_id = 5678) [press Enter]
+---> { exists: true }
+update accounts set balance = balance + 500 where account_id = 5678 [press Enter]
+---> UPDATE 1
+update accounts set balance = balance - 500 where account_id = 1234 [press Enter]
+---> UPDATE 1
+bank$
+```
+To go back to normal modem, execute:
+```text
+bank$ suspend off
+bank>
 ```
 
 ### Quit
@@ -106,20 +134,22 @@ To quit the bank application:
 bank> quit
 ```
 
-## Transactions
+## Learning transactions
 
 ### Atomicity
 Try an operation that should fail, like transfering money from
-an unknown account into an existing account.
+an account with insufficient funds.
 
 Is that operation **atomic**, as implemented?
 
-How can transactions help?
+How can transactions help achieve atomicity?
+Add `begin`/`commit` commands at suitable places.
 
 ### Isolation
 Try running two operations in parallel by using two terminals
-and prompt mode.
+and suspend mode.
 
 Are the operations **isolated** from each other, as implemented?
 
-How can transactions help?
+How can transactions help achieve isolation?
+Add `begin`/`commit` commands at suitable places.
