@@ -187,7 +187,12 @@ async function doXyz(db, a, b, c) {
     }
 }
 ```
-Alternatively, use the function `inTransaction` from `common.js`:
+Alternatively, use the function `inTransaction` from `common.js`, changing
+the call:
+```js
+await doXyz(db, a, b, c);
+```
+to
 ```js
 await inTransaction(db, async () => await doXyz(db, a, b, c));
 ```
