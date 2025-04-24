@@ -135,11 +135,14 @@ update accounts set balance = balance - 500 where account_id = 1234 [press Enter
 ---> UPDATE 1
 bank$
 ```
-To go back to normal modem, execute:
+To go back to normal mode, execute:
 ```text
 bank$ suspend off
 bank>
 ```
+
+If you use `suspend` without the argument `on` or `off`, it toggles suspension
+mode.
 
 You can use `s` as a shorthand for `suspend`.
 
@@ -160,7 +163,24 @@ an account with insufficient funds.
 Is that operation **atomic**, as implemented?
 
 How can transactions help achieve atomicity?
-Add `begin`/`commit` commands at suitable places.
+Add `begin`/`commit`/`rollback` commands at suitable places,
+using the following pattern:
+```js
+function doXyz(db, a, b, c) {
+    await db.query('begin');
+    try {
+        // db access to implement operation xyz
+        await db.query('commit');
+    } catch (e) {
+        await db.query('rollback');
+        throw e;
+    }
+}
+```
+Alternatively, use the function `inTransaction` from `common.js`:
+```js
+await inTransaction(db, async () => await doXyz(db, a, b, c));
+```
 
 ### Isolation
 Try running two operations in parallel by using two terminals
@@ -169,4 +189,23 @@ and suspend mode.
 Are the operations **isolated** from each other, as implemented?
 
 How can transactions help achieve isolation?
-Add `begin`/`commit` commands at suitable places.
+
+Do we need the more expensive isolation level "repeatable read"?
+If so, use the following pattern:
+```js
+function doXyz(db, a, b, c) {
+    await db.query('begin');
+    await db.query('set transaction isolation level repeatable read');
+    try {
+        // db access to implement operation xyz
+        await db.query('commit');
+    } catch (e) {
+        await db.query('rollback');
+        throw e;
+    }
+}
+```
+Alternatively, use the function `inRepeatableReadTransaction` from `common.js`:
+```js
+await inRepeatableReadTransaction(db, async () => await doXyz(db, a, b, c));
+```

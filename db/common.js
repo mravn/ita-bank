@@ -27,6 +27,29 @@ export async function checkZeroBalance(db, account) {
     }
 }
 
+export async function inTransaction(db, operation) {
+    await db.query('begin');
+    try {
+        await operation();
+        await db.query('commit');
+    } catch (e) {
+        await db.query('rollback');
+        throw e;
+    }
+}
+
+export async function inRepeatableReadTransaction(db, operation) {
+    await db.query('begin');
+    await db.query('set transaction isolation level repeatable read');
+    try {
+        await operation();
+        await db.query('commit');
+    } catch (e) {
+        await db.query('rollback');
+        throw e;
+    }
+}
+
 export function parseAccountId(s) {
     try {
         const accountId = parseInt(s);

@@ -94,9 +94,17 @@ async function quit() {
 }
 
 function suspend(args) {
-   if (args.length !== 1 || (args[0] !== 'on' && args[0] !== 'off')) {
-       console.log("Usage: suspend [on|off]");
-       return;
-   }
-   suspendMode = (args[0] === 'on');
+    if (args.length === 0) {
+        suspendMode = !suspendMode;
+        return;
+    }
+    if (args.length === 1) {
+        const isOn = (args[0] === 'on');
+        const isOff = (args[0] === 'off');
+        if (isOn || isOff) {
+            suspendMode = isOn;
+            return;
+        }
+    }
+    console.log("Usage: suspend [on|off]");
 }

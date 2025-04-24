@@ -8,7 +8,7 @@ export default async function transfer(db, args) {
     const amount = parseAmount(args[0]);
     const sender = parseAccountId(args[2]);
     const receiver = parseAccountId(args[4]);
-    await doTransfer(db, amount, sender, receiver);    
+    await doTransfer(db, amount, sender, receiver);
 }
 
 async function doTransfer(db, amount, sender, receiver) {
