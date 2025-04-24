@@ -11,9 +11,9 @@ export default async function transfer(db, args) {
     await doTransfer(db, amount, sender, receiver);    
 }
 
-async function doTransfer(conn, amount, sender, receiver) {
-    await checkAccountExists(conn, sender);
-    await checkAccountExists(conn, receiver);
-    await conn.query('update accounts set balance = balance + $1 where account_id = $2', [amount, receiver]);
-    await conn.query('update accounts set balance = balance - $1 where account_id = $2', [amount, sender]);
+async function doTransfer(db, amount, sender, receiver) {
+    await checkAccountExists(db, sender);
+    await checkAccountExists(db, receiver);
+    await db.query('update accounts set balance = balance + $1 where account_id = $2', [amount, receiver]);
+    await db.query('update accounts set balance = balance - $1 where account_id = $2', [amount, sender]);
 }
