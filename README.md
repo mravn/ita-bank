@@ -164,7 +164,13 @@ Is that operation **atomic**, as implemented?
 
 How can transactions help achieve atomicity?
 Add `begin`/`commit`/`rollback` commands at suitable places,
-using the following pattern:
+changing
+```js
+function doXyz(db, a, b, c) {
+    // db access to implement operation xyz
+}
+```
+into
 ```js
 function doXyz(db, a, b, c) {
     await db.query('begin');
