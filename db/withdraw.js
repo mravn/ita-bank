@@ -2,7 +2,7 @@ import { checkAccountExists, parseAmount, parseAccountId } from './common.js';
 
 export default async function withdraw(db, args) {
     if (args.length !== 3 || args[1] !== 'from') {
-        throw new Error('Usage: withdraw <amount> from <account>')
+        throw new Error('Usage: w[ithdraw] <amount> from <account>')
     }
     const amount = parseAmount(args[0]);
     const account = parseAccountId(args[2]);

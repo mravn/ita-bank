@@ -1,11 +1,11 @@
 import { parseAccountId } from "./common.js";
 
 export default async function open(db, args) {
-    if (args.length !== 2 || args[0] !== 'account') {
-        console.log('Usage: open account <account>');
+    if (args.length !== 1) {
+        console.log('Usage: o[pen] <account>');
         return;
     }
-    const account = parseAccountId(args[1]);
+    const account = parseAccountId(args[0]);
     await doOpen(db, account);
 }
 

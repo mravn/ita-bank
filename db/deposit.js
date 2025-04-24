@@ -2,7 +2,7 @@ import { checkAccountExists, parseAmount, parseAccountId } from './common.js';
 
 export default async function deposit(db, args) {
     if (args.length !== 3 || args[1] !== 'into') {
-        console.log('Usage: deposit <amount> into <account>');
+        console.log('Usage: d[eposit] <amount> into <account>');
         return;
     }
     const amount = parseAmount(args[0]);

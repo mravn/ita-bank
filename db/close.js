@@ -1,11 +1,11 @@
 import { checkAccountExists, parseAccountId, checkZeroBalance } from './common.js';
 
 export default async function close(db, args) {
-    if (args.length !== 2 || args[0] !== 'account') {
-        console.log('Usage: close account <account>');
+    if (args.length !== 1) {
+        console.log('Usage: c[lose] <account>');
         return;
     }
-    const account = parseAccountId(args[1]);
+    const account = parseAccountId(args[0]);
     await doClose(db, account);
 }
 

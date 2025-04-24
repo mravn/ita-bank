@@ -1,6 +1,6 @@
 export default async function print(db, args) {
     if (args.length !== 0) {
-        console.log('Usage: print');
+        console.log('Usage: p[rint]');
         return;
     }
     await doPrint(db);

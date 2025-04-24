@@ -57,7 +57,7 @@ You can use `p` as a shorthand for `print`.
 ### Open account
 To open account 1234 with a balance of $0:
 ```text
-bank> open account 1234
+bank> open 1234
 bank>
 ```
 Account numbers must be unique integers in the range 0..1000000 (incl..excl).
@@ -96,7 +96,7 @@ You can use `t` as a shorthand for `transfer`.
 ### Close account
 To close account 1234:
 ```text
-bank> close account 1234
+bank> close 1234
 bank>
 ```
 The account balance must be zero when closing an account.

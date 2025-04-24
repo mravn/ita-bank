@@ -2,7 +2,7 @@ import { checkAccountExists, parseAccountId, parseAmount } from './common.js';
 
 export default async function transfer(db, args) {
     if (args.length !== 5 || args[1] !== 'from' || args[3] !== 'to') {
-        console.log('Usage: transfer <amount> from <sender> to <receiver>')
+        console.log('Usage: t[ransfer] <amount> from <sender> to <receiver>')
         return;
     }
     const amount = parseAmount(args[0]);

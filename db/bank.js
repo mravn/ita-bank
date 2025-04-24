@@ -17,7 +17,16 @@ function currentConnection() {
 while (true) {
     const s = (await promptForCommandString()).trim();
     if (s.length === 0) {
-        console.log('Please enter a command: print | open | deposit | withdraw | transfer | close | reset | suspend | quit')
+        console.log('Usage:');
+        console.log('  p[rint]    -- print accounts');
+        console.log('  o[pen]     -- open account');
+        console.log('  d[eposit]  -- deposit funds');
+        console.log('  w[ithdraw] -- withdraw funds');
+        console.log('  t[ransfer] -- transfer funds between accounts');
+        console.log('  c[lose]    -- close account');
+        console.log('  r[eset]    -- reset database');
+        console.log('  s[uspend]  -- toggle suspend mode');
+        console.log('  q[uit]     -- quit application');
         continue;
     }
     const split = s.split(/\s+/);
