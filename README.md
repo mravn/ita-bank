@@ -41,6 +41,27 @@ You'll then get a prompt of the form:
 bank> 
 ```
 
+### Get help
+To see a list of available commands:
+```text
+bank> help
+
+Usage:
+  h[elp]     -- get help
+  p[rint]    -- print accounts
+  o[pen]     -- open account
+  d[eposit]  -- deposit funds
+  w[ithdraw] -- withdraw funds
+  t[ransfer] -- transfer funds between accounts
+  c[lose]    -- close account
+  r[eset]    -- reset database
+  s[uspend]  -- toggle suspend mode
+  q[uit]     -- quit application
+
+bank>
+```
+You can use `h` as a shorthand for `help`.
+
 ### Print accounts
 To print all account balances and compare with vault balance:
 ```text
@@ -94,7 +115,6 @@ To transfer $500 from account 1234 to account 5678:
 bank> transfer 500 from 1234 to 5678
 bank>
 ```
-
 You can use `t` as a shorthand for `transfer`.
 
 ### Close account
@@ -114,11 +134,9 @@ a zero vault balance:
 bank> reset
 bank>
 ```
-
 You can use `r` as a shorthand for `reset`.
 
 ### Suspend mode
-
 To facilitate playing with transaction isolation, you can have
 the bank suspend execution just before each database access:
 ```text
@@ -144,7 +162,6 @@ To go back to normal mode, execute:
 bank$ suspend off
 bank>
 ```
-
 If you use `suspend` without the argument `on` or `off`, it toggles suspension
 mode.
 
@@ -155,7 +172,6 @@ To quit the bank application:
 ```text
 bank> quit
 ```
-
 You can use `q` as a shorthand for `quit`.
 
 ## Learning transactions

@@ -17,16 +17,8 @@ function currentConnection() {
 while (true) {
     const s = (await promptForCommandString()).trim();
     if (s.length === 0) {
-        console.log('Usage:');
-        console.log('  p[rint]    -- print accounts');
-        console.log('  o[pen]     -- open account');
-        console.log('  d[eposit]  -- deposit funds');
-        console.log('  w[ithdraw] -- withdraw funds');
-        console.log('  t[ransfer] -- transfer funds between accounts');
-        console.log('  c[lose]    -- close account');
-        console.log('  r[eset]    -- reset database');
-        console.log('  s[uspend]  -- toggle suspend mode');
-        console.log('  q[uit]     -- quit application');
+        console.log('Please enter a command.');
+        printUsage();
         continue;
     }
     const split = s.split(/\s+/);
@@ -55,6 +47,10 @@ async function executeCommand(command, args) {
 
 async function dispatchCommand(command, args) {
     switch (command) {
+        case 'h':
+        case 'help':
+            await help(args);
+            break;
         case 'p':
         case 'print':
             await print(currentConnection(), args);
@@ -92,8 +88,33 @@ async function dispatchCommand(command, args) {
             await quit(args);
             break;
         default:
-            console.log(`Unknown command: '${command}'`)
+            console.log(`Unknown command: '${command}'`);
+            printUsage();
     }
+}
+
+async function help(args) {
+    if (args.length !== 0) {
+        console.log('Usage: h[elp]');
+        return;
+    }
+    printUsage();
+}
+
+function printUsage() {
+    console.log();
+    console.log('Usage:');
+    console.log('  h[elp]     -- get help');
+    console.log('  p[rint]    -- print accounts');
+    console.log('  o[pen]     -- open account');
+    console.log('  d[eposit]  -- deposit funds');
+    console.log('  w[ithdraw] -- withdraw funds');
+    console.log('  t[ransfer] -- transfer funds between accounts');
+    console.log('  c[lose]    -- close account');
+    console.log('  r[eset]    -- reset database');
+    console.log('  s[uspend]  -- toggle suspend mode');
+    console.log('  q[uit]     -- quit application');
+    console.log();
 }
 
 async function quit(args) {

@@ -4,7 +4,7 @@ export async function recreate(db) {
     await db.query(`
         create table accounts (
             account_id integer primary key check (0 <= account_id and account_id < 1000000),
-            balance    numeric(20, 2) not null default 0 check (balance >= 0)
+            balance    numeric(12, 2) not null default 0 check (balance >= 0)
         );
         create table vault (
             balance    numeric(20, 2) not null default 0 check (balance >= 0)
