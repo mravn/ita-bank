@@ -28,19 +28,21 @@ export async function checkZeroBalance(db, account) {
 }
 
 export async function inTransaction(db, operation) {
-    await db.query('begin');
-    try {
-        await operation();
-        await db.query('commit');
-    } catch (e) {
-        await db.query('rollback');
-        throw e;
-    }
+    await db.query('begin'); // default isolation level is read committed
+    await doTransaction(db, operation);
 }
 
 export async function inRepeatableReadTransaction(db, operation) {
-    await db.query('begin');
-    await db.query('set transaction isolation level repeatable read');
+    await db.query('begin; set transaction isolation level repeatable read');
+    await doTransaction(db, operation);
+}
+
+export async function inSerializableTransaction(db, operation) {
+    await db.query('begin; set transaction isolation level serializable');
+    await doTransaction(db, operation);
+}
+
+async function doTransaction(db, operation) {
     try {
         await operation();
         await db.query('commit');

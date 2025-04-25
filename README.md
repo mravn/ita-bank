@@ -221,12 +221,11 @@ Are the operations **isolated** from each other, as implemented?
 
 How can transactions help achieve isolation?
 
-Do we need the more expensive isolation level "repeatable read"?
-If so, use the following pattern:
+Do we need the more expensive isolation levels anywhere? If so, use the following pattern:
 ```js
 async function doXyz(db, a, b, c) {
-    await db.query('begin');
-    await db.query('set transaction isolation level repeatable read');
+    await db.query('begin; set transaction isolation level repeatable read');
+    // or await db.query('begin; set transaction isolation level serializable');
     try {
         // db access to implement operation xyz
         await db.query('commit');
@@ -236,7 +235,9 @@ async function doXyz(db, a, b, c) {
     }
 }
 ```
-Alternatively, use the function `inRepeatableReadTransaction` from `common.js`:
+Alternatively, use one of the functions `inRepeatableReadTransaction` or
+`inSerializableTransaction` from `common.js`:
 ```js
 await inRepeatableReadTransaction(db, async () => await doXyz(db, a, b, c));
+await inSerializableTransaction(db, async () => await doXyz(db, a, b, c));
 ```
