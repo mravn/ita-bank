@@ -67,13 +67,13 @@ To print all account balances and compare with vault balance:
 ```text
 bank> print
 
-Number of accounts:         2
------------------------------
-001234:                100.00
-005678:                400.00
------------------------------
-Total balance:         500.00 ✓
-Vault balance:         500.00 ✓
+Number of accounts:        2
+----------------------------
+001234:               100.00
+005678:               400.00
+----------------------------
+Total :               500.00 ✓
+Vault :               500.00 ✓
 
 bank>
 ```
