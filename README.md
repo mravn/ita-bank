@@ -95,7 +95,7 @@ To deposit $500 into account 1234:
 bank> deposit 500 into 1234
 bank>
 ```
-Amounts must be non-negative.
+Amounts must be non-negative. Account balances must be less than $10bn.
 
 You can use `d` as a shorthand for `deposit`.
 
