@@ -1,12 +1,13 @@
 {
+    "name": "bank",
     "private": true,
     "type": "module",
     "scripts": {
-        "createDb": "node db/createDb.js",
+        "create-db": "node db/createDb.js",
         "bank": "node db/bank.js"
     },
     "dependencies": {
-        "pg": "8.14.1",
-        "dotenv": "16.5.0"
+        "pg": "8.20.0",
+        "dotenv": "17.4.2"
     }
 }

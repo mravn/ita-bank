@@ -20,13 +20,14 @@ PG_PASSWORD=<very secret>
 ```
 The credentials must support connection to a PostgreSQL database
 server that allows execution of DDL and DML commands as well as
-DQL queries.
+DQL queries. The `psql` tool can be used to create the database
+`bank` on the PostgreSQL server.
 
 Then run
 
 ```shell
 npm install
-npm run createDb
+npm run create-db
 ```
 
 ## Use
@@ -203,15 +204,6 @@ async function doXyz(db, a, b, c) {
     }
 }
 ```
-Alternatively, use the function `inTransaction` from `common.js`, changing
-the call:
-```js
-await doXyz(db, a, b, c);
-```
-to
-```js
-await inTransaction(db, async () => await doXyz(db, a, b, c));
-```
 
 ### Isolation
 Try running two operations in parallel by using two terminals
@@ -234,10 +226,4 @@ async function doXyz(db, a, b, c) {
         throw e;
     }
 }
-```
-Alternatively, use one of the functions `inRepeatableReadTransaction` or
-`inSerializableTransaction` from `common.js`:
-```js
-await inRepeatableReadTransaction(db, async () => await doXyz(db, a, b, c));
-await inSerializableTransaction(db, async () => await doXyz(db, a, b, c));
 ```
