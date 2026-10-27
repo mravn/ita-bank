@@ -17,6 +17,7 @@ PG_PORT=5432
 PG_DATABASE=bank
 PG_USER=neondb_owner
 PG_PASSWORD=<very secret>
+DOTENV_CONFIG_QUIET=true
 ```
 The credentials must support connection to a PostgreSQL database
 server that allows execution of DDL and DML commands as well as
